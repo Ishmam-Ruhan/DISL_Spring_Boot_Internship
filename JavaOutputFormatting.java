@@ -3,6 +3,16 @@ import java.util.*;
 
 public class Solution {
 
+    /*
+    *
+    * Problem Link: https://www.hackerrank.com/challenges/java-output-formatting/problem?isFullScreen=true
+    *
+    * Problem Name: Output Formating
+    *
+    * Status: Solved
+    *
+     */
+
     public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
         System.out.println("================================");
