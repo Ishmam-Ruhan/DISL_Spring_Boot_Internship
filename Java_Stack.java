@@ -8,6 +8,7 @@ class Solution{
     *
     *   Problem Name: Java Stack
     *
+     *  Status: Solved
     */
 	
 	public static void main(String []argh)
