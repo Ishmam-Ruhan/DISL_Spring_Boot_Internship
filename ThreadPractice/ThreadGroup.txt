@@ -1,0 +1,76 @@
+package com.ishmamruhan.HackerrRankPracticeProblem.GenericsPractice;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+class Bank{
+    int bankBalance = 20000;
+
+    synchronized void depositMoney(int money){                              // Method Level Synchronization
+        System.out.println(Thread.currentThread().getName()+" Enters!!!!!");
+        bankBalance += money;
+        System.out.println("Result: deposit success!");
+        System.out.println("--------- "+Thread.currentThread().getName()+" is Leaving ---------------"+"TG: "+Thread.currentThread().getThreadGroup().getName());
+    }
+
+     void withdrawMoney(int money){
+        synchronized (this){                                                // Block level synchronization
+            System.out.println(Thread.currentThread().getName()+" Enters!!!!!");
+            if(money > bankBalance){
+                System.out.println("Result: Balance Too Low!");
+                System.out.println("--------- "+Thread.currentThread().getName()+" is Leaving ---------------"+"TG: "+Thread.currentThread().getThreadGroup().getName());
+                return;
+            }
+            bankBalance -= money;
+            System.out.println("Result: withdraw success!");
+
+            System.out.println("--------- "+Thread.currentThread().getName()+" is Leaving ---------------"+"TG: "+Thread.currentThread().getThreadGroup().getName());
+        }
+    }
+}
+
+
+class Person implements  Runnable{
+
+    Bank bank;
+    String op;
+    int amount;
+
+    public Person(Bank bank, String op, int amount) {
+        this.bank = bank;
+        this.op = op;
+        this.amount = amount;
+    }
+
+    @Override
+    public void run() {
+        if(op.equals("w")){
+            bank.withdrawMoney(amount);
+        }
+        else if(op.equals("d")){
+            bank.depositMoney(amount);
+        }
+    }
+}
+
+
+public class Function {
+
+    public static void main(String[] args) {
+        Bank bdBank = new Bank();
+
+        ThreadGroup testThreadGroup1 = new ThreadGroup("Test-Thread-Group-One");	// Group-1
+        ThreadGroup testThreadGroup2 = new ThreadGroup("Test-Thread-Group-Two");	// Group-2
+
+        Thread person1 =new Thread(testThreadGroup1,new Person(bdBank,"w",20000));
+        Thread person2 =new Thread(testThreadGroup2,new Person(bdBank,"w",20000));
+        Thread person3 =new Thread(testThreadGroup2,new Person(bdBank,"w",20000));
+
+        person1.start();
+        person2.start();
+        person3.start();
+    }
+}
