@@ -21,7 +21,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     @Autowired
@@ -62,7 +62,7 @@ public class UserController {
     @Operation(
             summary = "Add Multiple User",
             description = "Take a list of Users as parameter.")
-    @PostAPI("/addAll")
+    @PostAPI("/add/all")
     public ResponseEntity<Response<String>> addAllUser(@Valid @RequestBody List<User> users){
         String output = userService.addAllUser(users);
 

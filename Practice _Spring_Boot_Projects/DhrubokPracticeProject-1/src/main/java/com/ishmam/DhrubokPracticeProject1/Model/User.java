@@ -1,8 +1,11 @@
 package com.ishmam.DhrubokPracticeProject1.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ishmam.DhrubokPracticeProject1.ExceptionManagement.CustomError;
 import com.ishmam.DhrubokPracticeProject1.Helpers.DateGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,6 +14,8 @@ import javax.validation.constraints.Size;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -40,6 +45,10 @@ public class User {
     @NotNull
     private String bloodGroup;
 
+    @ManyToMany(mappedBy = "users")
+    @JsonIgnoreProperties({"users"})
+    private List<Course> courses = new LinkedList<>();
+
     private String createdAt;
 
     private String updatedAt;
@@ -47,14 +56,14 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String dateOfBirth, int age, Address address, String bloodGroup) {
+    public User(String name, String email, String dateOfBirth, int age, Address address, String bloodGroup, List<Course> courses) {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.age = age;
         this.address = address;
         this.bloodGroup = bloodGroup;
-
+        this.courses = courses;
     }
 
     @PrePersist
@@ -134,6 +143,10 @@ public class User {
     private void setAge() {
         String[] date = getDateOfBirth().split("-");
 
+        if(date.length == 1) {
+            throw new CustomError(HttpStatus.BAD_REQUEST, "Operation Failed! Please Provide date with correct format. Ex: dd-MM-yyyy");
+        }
+
         LocalDate todayDate = LocalDate.now();
         LocalDate birthDate  = LocalDate.of(
           Integer.parseInt(date[2]),
@@ -161,6 +174,16 @@ public class User {
     public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
     }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+
 
     public String getCreatedAt() {
         return createdAt;

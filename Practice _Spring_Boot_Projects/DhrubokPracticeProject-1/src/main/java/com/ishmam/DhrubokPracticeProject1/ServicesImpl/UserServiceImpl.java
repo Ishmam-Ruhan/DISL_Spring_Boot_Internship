@@ -1,13 +1,11 @@
 package com.ishmam.DhrubokPracticeProject1.ServicesImpl;
 
 import com.ishmam.DhrubokPracticeProject1.ExceptionManagement.CustomError;
-import com.ishmam.DhrubokPracticeProject1.Helpers.DateGenerator;
 import com.ishmam.DhrubokPracticeProject1.Model.User;
 import com.ishmam.DhrubokPracticeProject1.Repositories.UserRepo;
 import com.ishmam.DhrubokPracticeProject1.Services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
