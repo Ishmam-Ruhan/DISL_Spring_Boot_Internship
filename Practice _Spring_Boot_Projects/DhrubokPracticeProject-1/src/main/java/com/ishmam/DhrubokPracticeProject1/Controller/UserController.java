@@ -106,7 +106,7 @@ public class UserController {
     }
 
 
-        @Operation(summary = "Get All Users",
+    @Operation(summary = "Get All Users",
             description = "Nothing to pass. Fetch All Users!")
     @GetAPI("/get/all")
     public ResponseEntity<Response<List<User>>> getAllUsers(){
@@ -198,6 +198,4 @@ public class UserController {
                         user
                 ));
     }
-
-
 }

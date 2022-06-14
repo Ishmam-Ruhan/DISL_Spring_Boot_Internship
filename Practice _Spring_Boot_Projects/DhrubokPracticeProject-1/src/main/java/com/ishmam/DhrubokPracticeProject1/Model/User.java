@@ -1,8 +1,8 @@
 package com.ishmam.DhrubokPracticeProject1.Model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.ishmam.DhrubokPracticeProject1.Helpers.DateDeserializer;
 import com.ishmam.DhrubokPracticeProject1.Helpers.DateGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,12 +11,14 @@ import javax.validation.constraints.Size;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
-import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User {
+
+    public static final Logger logger = LoggerFactory.getLogger(User.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT")
@@ -29,32 +31,71 @@ public class User {
     @Email(message = "Please provide a valid email address.")
     private String email;
 
-    @JsonDeserialize(using = DateDeserializer.class)
     @NotNull(message = "Date of Birth field must not be null!")
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private int age;
     @NotNull(message = "Address field must not be null!")
-    @OneToOne(fetch = FetchType.EAGER)
-    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     @NotNull
     private String bloodGroup;
-    @NotNull
-    @JsonDeserialize(using = DateDeserializer.class)
-    private Date createdAt = new Date();
-    @JsonDeserialize(using = DateDeserializer.class)
-    private Date updatedAt;
+
+    private String createdAt;
+
+    private String updatedAt;
 
     public User() {
     }
 
-    public User(String name, String email, Date dateOfBirth, int age, Address address, String bloodGroup) {
+    public User(String name, String email, String dateOfBirth, int age, Address address, String bloodGroup) {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.age = age;
         this.address = address;
         this.bloodGroup = bloodGroup;
+
+    }
+
+    @PrePersist
+    public void prePersist(){
+        if(this.createdAt == null) setCreatedAt(DateGenerator.generateDate());
+        if(this.updatedAt == null) setUpdatedAt(DateGenerator.generateDate());
+    }
+
+    @PreUpdate
+    public void preUpdate(){
+        setUpdatedAt(this.getUpdatedAt());
+        setUpdatedAt(DateGenerator.generateDate());
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getId().equals(user.getId()) && getEmail().equals(user.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmail());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", age=" + age +
+                ", address=" + address +
+                ", bloodGroup='" + bloodGroup + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 
     public BigInteger getId() {
@@ -77,19 +118,32 @@ public class User {
         this.email = email;
     }
 
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        setAge();
+    }
+
     public int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    private void setAge() {
+        String[] date = getDateOfBirth().split("-");
 
-        LocalDate today = LocalDate.now();
+        LocalDate todayDate = LocalDate.now();
+        LocalDate birthDate  = LocalDate.of(
+          Integer.parseInt(date[2]),
+          Integer.parseInt(date[1]),
+          Integer.parseInt(date[0])
+        );
 
-        LocalDate birthDate = LocalDate.ofInstant(getDateOfBirth().toInstant(), ZoneId.systemDefault());
+        Period calculatedDate = Period.between(birthDate,todayDate);
 
-        Period calculatedAge = Period.between(birthDate,today);
-
-        this.age = calculatedAge.getYears();
+        this.age = calculatedDate.getYears();
     }
 
     public Address getAddress() {
@@ -108,28 +162,19 @@ public class User {
         this.bloodGroup = bloodGroup;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

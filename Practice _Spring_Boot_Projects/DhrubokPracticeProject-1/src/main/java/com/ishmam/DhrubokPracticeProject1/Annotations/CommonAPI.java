@@ -13,8 +13,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "SUCCESS", content = @Content),
-        @ApiResponse(responseCode = "400", description = "Bad Request"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Failure") })
+        @ApiResponse(responseCode = "201", description = "CREATED", content = @Content),
+        @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+        @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+        @ApiResponse(responseCode = "500", description = "FAILURE") })
 public @interface CommonAPI {
 }

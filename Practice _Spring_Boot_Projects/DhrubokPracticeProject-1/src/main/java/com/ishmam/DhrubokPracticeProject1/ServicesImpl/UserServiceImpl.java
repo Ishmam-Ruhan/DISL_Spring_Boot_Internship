@@ -1,23 +1,25 @@
 package com.ishmam.DhrubokPracticeProject1.ServicesImpl;
 
 import com.ishmam.DhrubokPracticeProject1.ExceptionManagement.CustomError;
+import com.ishmam.DhrubokPracticeProject1.Helpers.DateGenerator;
 import com.ishmam.DhrubokPracticeProject1.Model.User;
-import com.ishmam.DhrubokPracticeProject1.Output.Response;
 import com.ishmam.DhrubokPracticeProject1.Repositories.UserRepo;
 import com.ishmam.DhrubokPracticeProject1.Services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    public static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepo userRepo;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
         if(savedUser != null){
             return savedUser;
         }else{
+            logger.error("User is NULL!!");
             throw new CustomError(HttpStatus.BAD_REQUEST,"Operation Failed! Please Try again..");
         }
     }
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
         try{
             userRepo.saveAll(user);
         }catch (Exception ex){
+            logger.error(ex.getMessage());
             throw new CustomError(HttpStatus.BAD_REQUEST,"Operation Failed! Please Try again..");
         }
         return "All Users Saved Successfully!";
@@ -52,6 +56,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepo.findById(id).orElse(null);
 
         if(user == null){
+            logger.error("User is NULL!");
             throw new CustomError(HttpStatus.NOT_FOUND,"User with id: "+id+" not found!");
         }
 
@@ -64,6 +69,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepo.findByemail(email).orElse(null);
 
         if(user == null){
+            logger.error("User is NULL!");
             throw new CustomError(HttpStatus.NOT_FOUND,"User with email: "+email+" not found!");
         }
 
@@ -112,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
         User user = getUserbyId(id);
 
-        userRepo.deleteById(id);
+        userRepo.deleteById(user.getId());
 
         return "Successfully Deleted User!";
     }
@@ -120,8 +126,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User updatedUser) throws CustomError {
         User user = getUserbyId(updatedUser.getId());
-        user.setUpdatedAt(new Date());
 
-        return userRepo.save(user);
+        if(user == null){
+            logger.error("User is NULL!");
+            throw new CustomError(HttpStatus.NOT_FOUND,"User with id: "+updatedUser.getId()+" not found!");
+        }
+
+        return userRepo.save(updatedUser);
     }
 }
