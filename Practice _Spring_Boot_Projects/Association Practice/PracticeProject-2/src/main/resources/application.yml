@@ -1,0 +1,22 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: disl-practice-project
+
+  datasource:
+    url: jdbc:postgresql://172.17.0.2:5432/disl_prac_2
+    username: postgres
+    password: root
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        generate_statistics: true
+
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
