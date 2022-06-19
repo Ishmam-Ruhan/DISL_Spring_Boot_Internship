@@ -1,0 +1,32 @@
+#Application Server Port
+server:
+  port: 8089
+
+#Application Server Name
+spring:
+  application:
+    name: disl-assignment-one
+
+#Application Database Setup
+  datasource:
+    url: jdbc:postgresql://172.17.0.2:5432/disl_assignment_one
+    username: postgres
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        #generate_statistics: true
+        jdbc:
+          batch_size: 50
+          order_inserts: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+#OpenAPI Swagger-UI Custom Path
+springdoc:
+  swagger-ui:
+    path: /documentation
+
+
