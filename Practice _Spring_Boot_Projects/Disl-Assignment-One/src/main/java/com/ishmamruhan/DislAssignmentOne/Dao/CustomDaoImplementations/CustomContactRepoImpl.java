@@ -43,8 +43,6 @@ public class CustomContactRepoImpl implements CustomContactRepo {
 
         TypedQuery<Contact> typedQuery = entityManager.createQuery(criteriaQuery);
 
-        System.out.println("Repo: "+typedQuery.getResultList());
-
         return typedQuery.getResultList();
     }
 
@@ -61,27 +59,90 @@ public class CustomContactRepoImpl implements CustomContactRepo {
 
         if(Objects.nonNull(contactSearchCriteria.getFirstname())){
             predicateList.add(
-                    criteriaBuilder.like(criteriaRoot.get("firstName"),"%"+contactSearchCriteria.getFirstname()+"%")
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.get("firstName"))
+                            ,"%"+contactSearchCriteria.getFirstname()+"%")
             );
         }
         if(Objects.nonNull(contactSearchCriteria.getLastname())){
             predicateList.add(
-                    criteriaBuilder.like(criteriaRoot.get("lastName"),"%"+contactSearchCriteria.getLastname()+"%")
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.get("lastName"))
+                            ,"%"+contactSearchCriteria.getLastname()+"%")
             );
         }
         if(Objects.nonNull(contactSearchCriteria.getEmail())){
             predicateList.add(
-                    criteriaBuilder.like(criteriaRoot.get("email"),"%"+contactSearchCriteria.getEmail()+"%")
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.get("email"))
+                            ,"%"+contactSearchCriteria.getEmail()+"%")
             );
         }
+
+        if(Objects.nonNull(contactSearchCriteria.getNationalId())){
+            predicateList.add(
+                    criteriaBuilder.like(criteriaRoot.get("nationalId"),"%"+contactSearchCriteria.getNationalId()+"%")
+            );
+        }
+
+        if(Objects.nonNull(contactSearchCriteria.getPassport())){
+            predicateList.add(
+                    criteriaBuilder.like(criteriaRoot.get("passportNo"),"%"+contactSearchCriteria.getPassport()+"%")
+            );
+        }
+
+        if(Objects.nonNull(contactSearchCriteria.getJobTitle())){
+            predicateList.add(
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.get("jobTitle"))
+                            ,"%"+contactSearchCriteria.getJobTitle()+"%")
+            );
+        }
+
+        if(Objects.nonNull(contactSearchCriteria.getCompany())){
+            predicateList.add(
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.get("company"))
+                            ,"%"+contactSearchCriteria.getCompany()+"%")
+            );
+        }
+
+        if(Objects.nonNull(contactSearchCriteria.getHighestEducation())){
+            predicateList.add(
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.get("highestLevelEducation"))
+                            ,"%"+contactSearchCriteria.getHighestEducation()+"%")
+            );
+        }
+
+        if(Objects.nonNull(contactSearchCriteria.getGender())){
+            predicateList.add(
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.get("gender"))
+                            ,"%"+contactSearchCriteria.getGender()+"%")
+            );
+        }
+
+        if(Objects.nonNull(contactSearchCriteria.getBloodGroup())){
+            predicateList.add(
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.get("bloodGroup"))
+                            ,"%"+contactSearchCriteria.getBloodGroup()+"%")
+            );
+        }
+
         if(Objects.nonNull(contactSearchCriteria.getCity())){
             predicateList.add(
-                    criteriaBuilder.like(criteriaRoot.join("addressList").get("city"),"%"+contactSearchCriteria.getCity()+"%")
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.join("addressList").get("city"))
+                            ,"%"+contactSearchCriteria.getCity()+"%")
             );
         }
         if(Objects.nonNull(contactSearchCriteria.getState())){
             predicateList.add(
-                    criteriaBuilder.like(criteriaRoot.join("addressList").get("state"),"%"+contactSearchCriteria.getState()+"%")
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(criteriaRoot.join("addressList").get("state"))
+                            ,"%"+contactSearchCriteria.getState()+"%")
             );
         }
         if(Objects.nonNull(contactSearchCriteria.getZipcode())){
@@ -109,7 +170,6 @@ public class CustomContactRepoImpl implements CustomContactRepo {
             predicateList.add(
                     criteriaBuilder.between(criteriaRoot.get("birthDate"),startDate,endDate)
             );
-            System.out.println("Added - birthdate");
         }
         else if(Objects.nonNull(contactSearchCriteria.getStartBirthDate()) ||
                 Objects.nonNull(contactSearchCriteria.getEndBirthDate())){

@@ -1,7 +1,9 @@
 package com.ishmamruhan.DislAssignmentOne.Controller;
 
+import com.ishmamruhan.DislAssignmentOne.Annotations.DeleteAPI;
 import com.ishmamruhan.DislAssignmentOne.Annotations.GetAPI;
 import com.ishmamruhan.DislAssignmentOne.Annotations.PostAPI;
+import com.ishmamruhan.DislAssignmentOne.Annotations.PutAPI;
 import com.ishmamruhan.DislAssignmentOne.Entity.ContactEntity.Contact;
 import com.ishmamruhan.DislAssignmentOne.Entity.ContactEntity.ContactSearchCriteria;
 import com.ishmamruhan.DislAssignmentOne.Output.Response;
@@ -22,7 +24,7 @@ public class ContactController {
     private ContactService contactService;
 
 
-    @Operation(summary = "Welcome Message!")
+    @Operation(summary = "Welcome Message and check controller!")
     @GetAPI("/welcome")
     public ResponseEntity<Response> wecomeMessage(){
 
@@ -30,7 +32,7 @@ public class ContactController {
           new Response<>(
                   HttpStatus.OK,
                   true,
-                  "Api Fetch Success!",
+                  "Contact controller works fine!",
                     "Welcome To Contact Controller!"
           )
         );
@@ -47,7 +49,7 @@ public class ContactController {
                 new Response<>(
                         HttpStatus.CREATED,
                         true,
-                        "Contact creation Success!",
+                        "Contact created Success!",
                         contactService.addContact(contact)
                 )
         );
@@ -70,7 +72,14 @@ public class ContactController {
             @RequestParam(required = false) Long startAge,
             @RequestParam(required = false) Long endAge,
             @RequestParam(required = false) String startBirthDate,
-            @RequestParam(required = false) String endBirthDate
+            @RequestParam(required = false) String endBirthDate,
+            @RequestParam(required = false) String nidNo,
+            @RequestParam(required = false) String passportNo,
+            @RequestParam(required = false) String job,
+            @RequestParam(required = false) String company,
+            @RequestParam(required = false) String maxEducation,
+            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) String bloodGroup
     ){
 
         ContactSearchCriteria contactSearchCriteria = new ContactSearchCriteria();
@@ -85,6 +94,13 @@ public class ContactController {
         contactSearchCriteria.setEndAge(endAge);
         contactSearchCriteria.setStartBirthDate(startBirthDate);
         contactSearchCriteria.setEndBirthDate(endBirthDate);
+        contactSearchCriteria.setNationalId(nidNo);
+        contactSearchCriteria.setPassport(passportNo);
+        contactSearchCriteria.setJobTitle(job);
+        contactSearchCriteria.setCompany(company);
+        contactSearchCriteria.setHighestEducation(maxEducation);
+        contactSearchCriteria.setGender(gender);
+        contactSearchCriteria.setBloodGroup(bloodGroup);
 
 
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -98,6 +114,39 @@ public class ContactController {
     }
 
 
-    
+    @Operation(
+            summary = "Update Contact",
+            description = "Single Contact **Update** API. Mandatory Fields: \"Id, Email, Firstname, Birthdate, Job Title, Company, Gender\"\n" +
+                    "\n ** Date Format:  dd-MM-yyyy **"
+    )
+    @PutAPI("/update")
+    public ResponseEntity<Response> updateContact(@Valid @RequestBody Contact contact){
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new Response<>(
+                        HttpStatus.OK,
+                        true,
+                        "Contact updated successfully!",
+                        contactService.updateContact(contact)
+                )
+        );
+    }
+
+    @Operation(
+            summary = "Delete Contact",
+            description = "Simple pass a contact id to delete all data!"
+    )
+    @DeleteAPI("/delete")
+    public ResponseEntity<Response> deleteContact(@RequestParam Long id){
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new Response<>(
+                        HttpStatus.OK,
+                        true,
+                        "Contact Deleted successfully!",
+                        contactService.deleteContact(id)
+                )
+        );
+    }
 
 }

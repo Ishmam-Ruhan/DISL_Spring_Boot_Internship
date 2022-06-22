@@ -9,6 +9,21 @@ public class ContactSearchCriteria {
     private String firstname;
     private String lastname;
     private String email;
+
+    private String nationalId;
+
+    private String passport;
+
+    private String jobTitle;
+
+    private String company;
+
+    private String highestEducation;
+
+    private String gender;
+
+    private String bloodGroup;
+
     private String city;
     private String state;
     private String zipcode;
@@ -53,6 +68,62 @@ public class ContactSearchCriteria {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getNationalId() {
+        return nationalId;
+    }
+
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getHighestEducation() {
+        return highestEducation;
+    }
+
+    public void setHighestEducation(String highestEducation) {
+        this.highestEducation = highestEducation;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
     }
 
     public String getCity() {

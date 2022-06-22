@@ -107,7 +107,7 @@ public class Contact{
 
     @PostLoad
     public void afterLoadedEntity(){
-        this.setFullName(this.getFirstName() + this.getLastName());
+        this.setFullName(this.getFirstName() +" "+this.getLastName());
         this.setAge(calculateAge(this.getBirthDate()));
     }
 
