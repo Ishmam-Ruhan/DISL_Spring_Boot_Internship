@@ -3,13 +3,11 @@ package com.ishmamruhan.DislAssignmentOne.Annotations;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
-@Target(ElementType.ANNOTATION_TYPE)
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 @ApiResponse(responseCode = "200", description = "OK", content = @Content)
 @ApiResponse(responseCode = "201", description = "CREATED", content = @Content)
 @ApiResponse(responseCode = "202", description = "ACCEPTED")
