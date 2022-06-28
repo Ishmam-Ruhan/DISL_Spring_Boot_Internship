@@ -1,0 +1,45 @@
+
+				#_____Very Basics of Spring Security_________
+
+
+	+ When we hit a request first it comes to dispatcher servelet. Then, dispatcher servelet send request to respective controller to 
+
+	  perform action.
+
+	+ If we want to execute something before servelet, we need to add filters. So, We are going to add security 
+
+	  before dispatcher servelet, so that every request should be authenticated.
+
+	
+	# Spring Security:
+
+	 + Spring security mainly implemented by 'Filters'. A Filter Chain is combination of multiple filters. For Ex:
+
+		Ex: One filter takes care authentication
+
+		    One filter takes care authorization
+
+		    One filter takes care log-out
+
+		    One filter takes care remember-me
+
+		
+		   And So on.....
+
+
+
+	+ Instead of configuring all these filters, we have to configure DFP(Deligating Filter Proxy). We have to configure it. Whenever
+
+	  a request come to the application, our DFP will filter the request.
+
+	+ DFP will deligate the request to FCP(Filter Chain Proxy). And Filter Chain Proxy is deligate of Above mentioned filters/ Filter Chains.
+
+	+  Our system can have multiple Filter Chains. One chain for Login via Google / One for Facebook / One for Github .. So On
+
+		- We have to mapping request for different different Filter Chains.
+
+			Ex: /google/*	-> Will execute google filer-chain
+
+			   /facebook/*  -> Will execute facebook filter-chain
+
+			  /credential/*  -> will execute our custom email password filter-chain

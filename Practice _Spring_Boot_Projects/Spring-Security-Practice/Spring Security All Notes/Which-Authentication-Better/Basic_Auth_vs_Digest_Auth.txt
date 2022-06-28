@@ -1,0 +1,74 @@
+
+					# Basic Authentication VS Digest Authentication
+
+
+
+	+ Which one is better?
+
+		- Basic auth can be used when we use Transport Layer Protocol(HTTPs). Otherwise we can give this security by Digest Auth when HTTP. 
+
+
+	+ Common Things:
+
+		- When client sent a request to server side for a secured resource and user is not logged in, Server sent back a response
+
+		  with Status code 401(Unauthorized) and some headers.
+
+	
+	+ Headers:
+			1. www-authentication(Both): 
+		
+				- For Basic: the value will be "basic".
+
+				- For Digest: the value will be "digest"
+
+			2. realm(Both): "__An unique name to identify the security credential____" 
+
+			3. nonce(**Digest Only**): "____Random number____"    ||> Pronounce: Number Once
+
+
+		
+	+ What Browser do after this response??
+
+		- The user has a prompted with lognin page for credential. What did they do after credential?? It sents few things to server. 
+
+		  Inside header, there are few things:
+
+			1. Authentication:
+
+			    For basic:
+
+				- "Basic" for basic authentication. 
+						
+				   and "(base-64) encoded (username:password)"
+
+				  # If anyone get access of our network, he can access the header. He can easily decoded the base 64 encripted
+				  # password easily. Cause this encoder is very common type. So, it is not secure.
+
+
+			    For digest:
+
+				- "Digest" for digest authentication. and 
+
+				    i)  username: "__Whatever username we gave__". and
+
+				   ii)  nonce: "___Provided in first request from server__"
+			
+				   iii) response: ** Response is calculated base on some formula **
+
+						- Hash1 : MD5(username:realm:password)
+
+						- Hash2 : MD5(http method:digestURI)
+
+						So,  response will be: MD5(Hash1:nonce:Hash2)
+					
+					   ~ First it creates a hash using username, password and the realm(Provided by Server from first request).
+
+					   ~ Second it creates a hash using method and digestURI
+
+					   ~ Finally, It creates a response using previously created two hashes and 
+					
+				              nonce(Provided by Server from first request)
+
+				# As it creates hash of username and password and multiple time, It is totally secure. No one can read it.SAFE
+		

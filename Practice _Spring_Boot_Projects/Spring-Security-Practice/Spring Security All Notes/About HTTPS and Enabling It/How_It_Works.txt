@@ -1,0 +1,45 @@
+
+
+					#----------- How SSL works -----------#
+
+	1. Assume, "A" is Server and "B" is Browser-Client.
+
+	2. First, for server "A", We should mentiion, where is our key in properties file.
+
+	
+
+	-> When client "B", sends a request via Https to server, Server-A responds with its certificate.
+
+	# What Browser-Client-B do after receving the certificate..??
+
+	-> Browser-B  will take the "Public Key" from certificate.
+
+	-> Browser-B will also geneate a random session key.
+
+	   After that, Browser-B will encrypt the session-key using the "Public Key" received from certificate.
+	
+           and WHO CAN DECRYPT IT..????
+
+	   as we know from SSL, if anything is encrypted with Public Key, can be Decrypt with Private key and vice-versa
+
+
+	-> Finally, "Browser-B" sends the encrpted data to the "Server-A"
+
+
+	3. Server-B can extract/get the session-key by decrypt it with private key.
+
+
+	## Now, When server sends data in encrypted format(using the session key + Private key) to Browser-----
+													      |-----> Symmetric Encryption
+	## Again, Browser sends data in encrypted format (using session key + Public key) to Client------------
+	
+	So, For data transportation, symmetric encryption is used.
+
+	----------------------
+
+	# SSL Handshaking:
+
+	-> Initially, some requests exchanged between Client-B and Server-A. It is known as SSL Handshake.
+
+	-> During this, Server & Client exchange certificate, agree upon this random session key. 
+

@@ -1,0 +1,24 @@
+server:
+  port: 8089                                           # Https Port
+  ssl:
+    enabled: true                                      # Enabling Https
+    protocol: TLS                                      # Adding Protocol
+    key-store-password: security-practice
+    key-alias: security-practice
+    key-store: classpath:myHttpsSecurityKey.p12
+    key-store-type: PKCS12
+  error:
+    whitelabel:
+      enabled: false                                    # Disabling Whitelabel error
+
+
+
+spring:
+  application:
+    name: spring-security-practice
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true

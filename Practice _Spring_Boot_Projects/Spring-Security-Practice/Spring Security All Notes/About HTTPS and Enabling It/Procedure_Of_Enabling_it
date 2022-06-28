@@ -1,0 +1,73 @@
+
+						#---------- Procedure-----------#
+
+
+	1. First we have to generate the key, using key-tool:
+
+	  [Command]:  keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore mykeystore.p12
+
+	  [Note]: 
+
+		- We can use different "alias" name.
+
+		- Each key can have multiple alias in a key.
+
+		- Extension ends with .p12 (As our store-type is PKCS12)
+
+		- Remember the password, when we use this key in our application it is needed
+
+		- It asks for few informations. this informations are kept in the certificate section.
+
+
+	2. Put it in our classpath.
+
+	3. In application.yml file, we have to configure it:
+
+		server:
+		  port: 8089                                           // Https Port
+		  ssl:
+		    enabled: true                                      // Enabling Https
+		    protocol: TLS                                      // Adding Protocol
+		    key-store-password: security-practice
+		    key-alias: security-practice
+		    key-store: classpath:myHttpsSecurityKey.p12        
+		    key-store-type: PKCS12
+		  error:
+		    whitelabel:
+		      enabled: false                                    // Disabling Whitelabel error
+
+
+	4. After That, we have to configure tomcat-server. So that, every request of HTTP also should redirect to HTTPS.
+
+
+		    @Bean
+		    public ServletWebServerFactory servletContainer() {
+
+		        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
+
+		            @Override
+		            protected void postProcessContext(Context context) {
+		                SecurityConstraint securityConstraint = new SecurityConstraint();
+		                securityConstraint.setUserConstraint("CONFIDENTIAL");
+		                SecurityCollection collection = new SecurityCollection();
+		                collection.addPattern("/*");
+		                securityConstraint.addCollection(collection);
+		                context.addConstraint(securityConstraint);
+		            }
+		        };
+
+		        tomcat.addAdditionalTomcatConnectors(redirectConnector());
+
+		        return tomcat;
+		    }
+
+
+		    private Connector redirectConnector() {
+		        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+
+		        connector.setScheme("http");
+		        connector.setPort(8080);
+		        connector.setRedirectPort(8443);
+
+		        return connector;
+		    }

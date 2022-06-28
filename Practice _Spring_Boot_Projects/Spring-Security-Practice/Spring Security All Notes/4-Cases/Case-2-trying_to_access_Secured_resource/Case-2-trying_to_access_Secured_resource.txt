@@ -1,0 +1,73 @@
+
+					#------------- User Trying to Access Secured Resource(Before Log In) -------#
+
+	
+
+	_/ 1st Filter: 
+			Name: Security Context Persistance Filter
+
+			Responsibility: 
+				
+				- Is there any security context in the session? No! So, It creates a empty Security Context and Populated 
+				  "Security context holder."
+
+				- Means, Is it a logged in user/device/application? NO
+
+	X  2nd Filter:
+
+			Name: Logout Filter
+
+			Responsibility: 
+
+				- Is this a logout request? NO! So, It is not invoked.
+
+	X  3rd Filter:
+
+			Name: Authentication FIlter
+
+			Responsibility: 
+
+				- Is it a authentication request? or Is user send any credintial through this request? NO 
+				  So, It is not invoked
+
+	X  4th Filter:
+
+			Name: Remember me filter
+
+			Responsibility: 
+
+				- It checks in the request is there any COOCKIE in the request called "Remember Me"? NO
+				
+
+	X  5th Filter:
+
+			Name: Exception Translation Filter
+
+			Responsibility:
+
+				- Check is there any exception or NOT! Exception means not authorised or not authenticated.
+				
+				- If not authenticated, it redirects to login page.
+
+				- When Top to Bottom it occurs no error/exception.
+
+				- After getting exception in 6th filter, then this filter starts executing;
+
+					- It will deligate "Authentication Entrypoint"
+
+					- It will then redirect to "login" url
+
+	_/  6th Filter:
+
+			Name: Filter Security Interceptor
+
+			Responsibility:
+
+				- Check is there any security on the resource? YES. But the user is not logged in. So, it threw an 
+				  Authentication Exception The exception will be invoked by "Exceptation Translation FIlter".
+
+	
+
+	** After that it rolled back to top step by step and invoked the 1st filter again. Again it checks if the security context changed 
+	  or not. If it is not changed then it will remove the "Security Context Holder" 
+

@@ -73,7 +73,11 @@ public class Address {
         return id;
     }
 
-    public void setAddressId(Long id) {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 

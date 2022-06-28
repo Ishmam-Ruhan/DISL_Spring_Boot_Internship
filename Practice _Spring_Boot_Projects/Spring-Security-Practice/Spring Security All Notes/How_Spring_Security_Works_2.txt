@@ -1,0 +1,35 @@
+
+			#------------- Few Terminologies -------#
+
+	1. Security Principal:
+
+		- Principal is an object which represents Logged In users/device/application.
+
+		- This object is created when successfully user is authenticated
+
+		- It contains logged in user details.
+
+
+	2. Authorities:
+
+		- It referes to 'Roles'
+
+		- User can have multiple authorities/roles.
+
+
+	3. Authentication:
+
+		- Using "Security Principal & Authorities", spring creates this authentication object!
+
+
+	4. Security Context:
+
+		- This previously created authentication object will create security context.
+
+		- If user is not logged in, security context will be NULL.
+
+		- Our user is logged in or not, It verify by this security context. If not logged in, it will be null
+
+	5. Http Session:
+
+		- Previously created Security Context will create Http Session

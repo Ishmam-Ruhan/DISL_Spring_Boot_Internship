@@ -1,0 +1,37 @@
+ 
+						#------------------- About Https ------------------#
+
+
+	1. Stands for:     Http + SSL (Secure Sockets Layer)
+
+	2. It gives Transport Layer Security.
+
+	   *** We can use Basic Authentication if Https is enabled. Otherwise we should go for Digest Authentication ***
+
+	
+	
+						#---------- How SSL works? -------------#
+
+
+	1. We have two application. Each application has two type of keys:
+
+			- Private key
+
+			- Public key (Stored in certificate section of .jks file. ".jks" file we can generate it in java.)
+
+
+	2. Asymetric Encription happens here. In asymetric encription -
+
+		# If data is encripted with "Private key", then it can be decrypt with "Public Key".
+
+		And Vice-versa,-
+
+		# If data is encripted with "Public key", then it can be decrypt with "Private Key"
+
+		      
+	3. ".jks" file has multiple entries. Each entry has a unique Alias.
+
+
+	4. One of the entry is Private Key.
+
+	5. Another one is Certificate. Certificate contains User Details and Public Key.

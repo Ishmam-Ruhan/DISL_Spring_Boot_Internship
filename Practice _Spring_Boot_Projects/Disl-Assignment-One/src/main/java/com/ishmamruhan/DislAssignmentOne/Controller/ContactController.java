@@ -41,7 +41,8 @@ public class ContactController {
     @Operation(
             summary = "Add a Contact",
             description = "Single Contact creation API. Mandatory Fields: \"Email, Firstname, Birthdate, Job Title, Company, Gender\"\n" +
-                    "\n ** Date Format:  dd-MM-yyyy **"
+                    "\n ** Date Format:  dd-MM-yyyy **\n" +
+                    "\n ** No address-id/contact-id should pass through through this api. It'll be auto generated!"
     )
     @PostAPI("/add-contact")
     public ResponseEntity<Response> addContact(@Valid @RequestBody Contact contact){
